@@ -2,7 +2,7 @@ SELECT product_name, quantity, price
 FROM order_items AS oi
 JOIN orders AS o ON oi.order_id = o.id
 WHERE o.id = 4
-ORDER BY price DESC
+ORDER BY price DESC;
 
 -- output:
 -- "product_name"	"quantity"	"price"
