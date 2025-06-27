@@ -6,7 +6,7 @@ import random
 fake = Faker()
 
 
-conn = psycopg2.connect(dbname='test_scrypt', user='postgres', password='biVw9-ix')
+conn = psycopg2.connect(dbname='tasks_idx_sel', user='gr4s', password="parol'chik")
 cur = conn.cursor()
 
 
