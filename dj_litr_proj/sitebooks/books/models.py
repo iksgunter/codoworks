@@ -32,4 +32,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"'{self.book.title}' от: {self.book.author.first_name} {self.book.author.last_name}, оценка: {self.rating}, комментарий: {self.comment}"
-

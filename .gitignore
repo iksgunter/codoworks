@@ -200,3 +200,7 @@ cython_debug/
 .gitignore
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/vcs.xml
+/order_subscription_service/.env
+/order_subscription_service/.gitignore
+/order_subscription_service/.idea
+/order_subscription_service/.venv
