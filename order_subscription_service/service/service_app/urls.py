@@ -15,20 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework.routers import DefaultRouter
 
-from products.views import OrderView
-from subscriptions.views import TariffView, UserSubscriptionView
-
-router = DefaultRouter()
-router.register(r'user-subscriptions', UserSubscriptionView, basename='user-subscriptions')
-router.register(r'tariffs', TariffView, basename='tariffs')
-router.register(r'orders', OrderView, basename='orders')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api/token/', obtain_auth_token)
+    path('api/products/', include('products.urls')),
+    path('api/subscriptions/', include('subscriptions.urls')),
+    path('api/token/', obtain_auth_token),
 ]

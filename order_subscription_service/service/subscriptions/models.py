@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models
+from service_app.config import SUBSCRIPTION_PRICES
 
 User = get_user_model()
 
@@ -37,12 +38,7 @@ class UserSubscription(models.Model):
     is_active = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        prices = {
-            'human': 1000,
-            'mountain': 2500,
-            'sky': 15000
-        }
-        self.price = prices.get(self.subscribe_type, 0)
+        self.price = SUBSCRIPTION_PRICES.get(self.subscribe_type, 0)
         super().save(*args, **kwargs)
 
     def __str__(self):
