@@ -18,12 +18,12 @@ metadata = MetaData(bind=engine)
 users = Table("users_customuser", metadata, autoload_with=engine)
 
 
-def start(update, context):
+def start(update):
     tg_id = update.message.chat_id
     update.message.reply_text("Привет! Отправь свой номер телефона для регистрации.")
 
 
-def phone_handler(update, context):
+def phone_handler(update):
     tg_id = update.message.chat_id
     phone = update.message.text.strip()
 

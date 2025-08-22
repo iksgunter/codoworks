@@ -3,6 +3,9 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from subscriptions.models import UserSubscription, Tariff
 from subscriptions.serializers import TariffSerializer, UserSubscriptionSerializer
+from service_app.config import SUBSCRIPTION_PRICES
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
 class TariffView(ReadOnlyModelViewSet):
@@ -22,6 +25,27 @@ class UserSubscriptionView(ModelViewSet):
         )
         .only("id", "subscribe_type", "price", "tariff__tariff_type", "tariff__discount_percent", "user__id",  "user")
     )
+
+    def get_permissions(self):
+        # Разрешаем list без аутентификации, остальное — только авторизованным
+        if self.action == 'list':
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+
+    def list(self, request, *args, **kwargs):
+        data = [
+            {"subscribe_type": key, "price": SUBSCRIPTION_PRICES.get(key, 0)}
+            for key in ("human", "mountain", "sky")
+        ]
+        return Response(data)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.action in ("retrieve", "update", "partial_update", "destroy"):
+            return qs.filter(user=self.request.user)
+        return qs
+
     serializer_class = UserSubscriptionSerializer
     lookup_field = "pk"
 

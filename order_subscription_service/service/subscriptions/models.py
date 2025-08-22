@@ -31,7 +31,7 @@ class UserSubscription(models.Model):
     )
 
     subscribe_type = models.CharField(choices=SUBSCRIBE_TYPES, max_length=128)
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     tariff = models.ForeignKey(Tariff, related_name="subscriptions",
         on_delete=models.PROTECT, default=get_default_tariff)
     price = models.PositiveIntegerField(default=0)

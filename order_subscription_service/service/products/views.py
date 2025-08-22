@@ -7,6 +7,9 @@ from rest_framework.viewsets import ModelViewSet
 from products.models import Order
 from products.serializers import OrderSerializer
 from subscriptions.permissions import HasActiveSubscription
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from service_app.config import PRODUCT_PRICES
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +21,21 @@ class OrderView(ModelViewSet):
     serializer_class = OrderSerializer
     lookup_field = "pk"
     permission_classes = [HasActiveSubscription]
+
+    def list(self, request, *args, **kwargs):
+        products_data = [
+            {"product_name": name, "price": price}
+            for name, price in PRODUCT_PRICES.items()
+        ]
+        return Response(products_data)
+
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.action in ("retrieve", "update", "partial_update", "destroy"):
+            return qs.filter(user=self.request.user)
+        return qs
+
 
     def perform_create(self, serializer):
         instance = serializer.save()
